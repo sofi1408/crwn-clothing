@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Switch , Route} from 'react-router-dom';
+import {Switch , Route, Redirect} from 'react-router-dom';
 
 import Homepage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
@@ -58,7 +58,9 @@ unSubscribeFromAuth = null;
         <Switch>
           <Route exact path='/' component={Homepage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/signin' component={SignInAndSignupPage} />
+          {/* <Route path='/signin' component={SignInAndSignupPage} /> */}
+          <Route exact path='/signin' render={() => this.props.currentUser ?
+                       (<Redirect to="/" />) : <SignInAndSignupPage />}  />
         </Switch>
       </div>
     )
@@ -66,7 +68,11 @@ unSubscribeFromAuth = null;
  
 }
 
+const mapStateToProps = ({user}) => ({    //destructuring user from state, also we made this function cz we 
+  currentUser : user.currentUser          //need user in the redirect otherwise we don't need this.
+})
+
 const mapDispatchToProps = dispatch => ({
    setCurrentUser : user => dispatch(setCurrentUser(user))
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
