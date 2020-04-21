@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {ReactComponent as Logo} from '../../../src/assets/crown.svg';
+import {cartHidden} from '../../redux/cart/cart.selectors';
+import {selectCurrentUser} from '../../redux/user/user.selectors';
 
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropDown from '../cart-dropdown/cart-dropdown.component';
@@ -32,9 +34,9 @@ const Header = ({currentUser,hidden}) => (
     </div>
 );
 
-const mapStateToProps = ({user : {currentUser}, cart : {hidden}}) => ({
-   currentUser,  //this state is the entire state of redux store, we can refer it as root-reducer
-   hidden
+const mapStateToProps = (state) => ({
+    currentUser: selectCurrentUser(state),
+    hidden : cartHidden(state)
 });
 
 export default connect(mapStateToProps)(Header);

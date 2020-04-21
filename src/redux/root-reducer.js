@@ -9,5 +9,5 @@ export default combineReducers({
     cart : cartReducer
 });
 
-//this combine reducer is basically JSON of various reducers where the key represents eaxh user
+//this combine reducer is basically JSON of various reducers where the key represents each user
 //like here key for userReducer is user.

@@ -4,11 +4,13 @@ import {Switch , Route, Redirect} from 'react-router-dom';
 
 import Homepage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
+import CheckoutPage from './pages/checkout/checkout.component';
 import SignInAndSignupPage from './pages/signin_and_signup_page/signin_and_signup_page.component';
 import Header from './components/header/header.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.util';
 import {connect} from 'react-redux';
-import {setCurrentUser}  from './redux/user/user-action'
+import {setCurrentUser}  from './redux/user/user-action';
+import {selectCurrentUser} from './redux/user/user.selectors';
 
 class App extends React.Component {
 constructor(){
@@ -61,6 +63,7 @@ unSubscribeFromAuth = null;
           {/* <Route path='/signin' component={SignInAndSignupPage} /> */}
           <Route exact path='/signin' render={() => this.props.currentUser ?
                        (<Redirect to="/" />) : <SignInAndSignupPage />}  />
+          <Route exact path='/checkout' component={CheckoutPage} />            
         </Switch>
       </div>
     )
@@ -68,8 +71,15 @@ unSubscribeFromAuth = null;
  
 }
 
-const mapStateToProps = ({user}) => ({    //destructuring user from state, also we made this function cz we 
-  currentUser : user.currentUser          //need user in the redirect otherwise we don't need this.
+//destructuring user from state, also we made this function cz we 
+//need user in the redirect otherwise we don't need this.
+//before using redirect....
+// const mapStateToProps = ({user}) => ({    
+//   currentUser : user.currentUser          
+// })
+
+const mapStateToProps = (state) => ({    
+  currentUser : selectCurrentUser(state)         
 })
 
 const mapDispatchToProps = dispatch => ({
